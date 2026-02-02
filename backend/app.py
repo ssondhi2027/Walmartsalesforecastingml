@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import pandas as pd
 from features import create_features
 from model import train_model
-from mrterics import evaluate
+from metrics import evaluate
 
 
 app = FastAPI()
