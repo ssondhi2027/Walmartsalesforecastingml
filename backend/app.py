@@ -10,6 +10,7 @@ app = FastAPI()
 def eda():
     from eda import run_eda
     summary = run_eda('data/train_Walmart_ML2.csv')
+    return summary
 
 @app.post("/train")
 def train():
@@ -19,4 +20,4 @@ def train():
     model, x_test, y_test = train_model(df)
     predictions = model.predict(x_test)
 
-    return evaluate(y_test, predictions)
+    return {"metrics": evaluate(y_test, predictions)}
