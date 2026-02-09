@@ -1,9 +1,10 @@
+import React from 'react';
 import { Upload, FileText, X } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 
 interface FileUploadProps {
-  onFileUpload: (data: any[]) => void;
+  onFileUpload: (data: any[], file: File) => void;
   fileName?: string;
   onClear?: () => void;
 }
@@ -11,26 +12,26 @@ interface FileUploadProps {
 export function FileUpload({ onFileUpload, fileName, onClear }: FileUploadProps) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target?.result as string;
-        const rows = text.split('\n').filter(row => row.trim());
-        const headers = rows[0].split(',').map(h => h.trim());
-        
-        const data = rows.slice(1).map(row => {
-          const values = row.split(',');
-          const obj: any = {};
-          headers.forEach((header, index) => {
-            obj[header] = values[index]?.trim();
-          });
-          return obj;
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target?.result as string;
+      const rows = text.split('\n').filter(row => row.trim());
+      const headers = rows[0].split(',').map(h => h.trim());
+
+      const data = rows.slice(1).map(row => {
+        const values = row.split(',');
+        const obj: any = {};
+        headers.forEach((header, index) => {
+          obj[header] = values[index]?.trim();
         });
-        
-        onFileUpload(data);
-      };
-      reader.readAsText(file);
-    }
+        return obj;
+      });
+
+      onFileUpload(data, file); // 🔥 pass FILE too
+    };
+    reader.readAsText(file);
   };
 
   return (

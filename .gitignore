@@ -1,0 +1,27 @@
+.env
+.env.*
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# Python venv
+backend/venv/
+.venv/
+venv/
+
+# Node
+node_modules/
+frontend/node_modules/
+dist/
+build/
+
+# Vite
+.vite/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+desktop.ini
